@@ -12,6 +12,8 @@ void CreateStorage();
 void ShowStorage(int mode = 0);
 void ShowSuperAdminMenu();
 void AddStorageItem();
+void RemoveStorageItem();
+void ChangeStoragePrice();
 
 bool IsNumber(const std::string& str);
 void Start();
