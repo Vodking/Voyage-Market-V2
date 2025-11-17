@@ -3,7 +3,7 @@
 size_t userSize = 2;
 
 std::string userStatus[3]{ "Супер администратор", "Администратор", "Сотрудник" };
-std::string* loginArr = new std::string[userSize]{ "ad", "us" };
+std::string* loginArr = new std::string[userSize]{ "admin", "user" };
 std::string* passArr = new std::string[userSize]{ "123", "321" };
 std::string* statusArr = new std::string[userSize]{ userStatus[0], userStatus[2] };
 std::string currentStatus{};
@@ -23,14 +23,14 @@ void CreateStorage()
 	unsigned int id[staticSize]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	std::string name[staticSize]
 	{
-		"патом", "пaaатом",
-		"патом", "паaaтом",
-		"патом", "паaaтом",
-		"патом", "паaaтом",
-		"патом", "паaaтом"
+		"Термос 0.5 литров", "Термос 1 литр",
+		"Термос 2 литра", "Палатка 'Одиночка'",
+		"Палатка 'Убежище'", "Палатка 'Вояж Делюкс'",
+		"Походный нож 'Грибник'", "Походный нож 'Веточник'",
+		"Анти-клещ 'Жижка'", "Рюкзак 'Вояж Простор'"
 	};
-	unsigned int count[staticSize]{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-	double price[staticSize]{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+	unsigned int count[staticSize]{ 5, 13, 10, 3, 4, 2, 7, 14, 6, 10 };
+	double price[staticSize]{ 539.99, 749.99, 999.99, 769.99 , 1199.99, 2499.99, 199.99, 499.99, 899.99, 1699.99 };
 
 	dynSize = staticSize;
 	idArr = new unsigned int[dynSize];
@@ -55,7 +55,7 @@ void ShowStorage(int mode)
 
 		for (size_t i = 0; i < dynSize; i++)
 		{
-			std::cout << idArr[i] << "\t" << std::left << std::setw(25) << nameArr[i] << "\t" << countArr[i] << "\t" << priceArr[i] << "\n";
+			std::cout << idArr[i] << "\t" << std::left << std::setw(25) << nameArr[i] << "\t\t" << countArr[i] << "\t" << priceArr[i] << "руб\n";
 		}
 		system("pause");
 	}
@@ -64,7 +64,7 @@ void ShowStorage(int mode)
 		std::cout << "ID\t" << std::left << std::setw(25) << "Название\t\t" << "Кол-во\t\n";
 		for (size_t i = 0; i < dynSize; i++)
 		{
-			std::cout << idArr[i] << "\t" << std::left << std::setw(25) << nameArr[i] << "\t" << countArr[i] << "\n";
+			std::cout << idArr[i] << "\t" << std::left << std::setw(25) << nameArr[i] << "\t\t" << countArr[i] << "\n";
 		}
 		system("pause");
 	}
@@ -74,7 +74,7 @@ void ShowStorage(int mode)
 
 		for (size_t i = 0; i < dynSize; i++)
 		{
-			std::cout << idArr[i] << "\t" << std::left << std::setw(25) << nameArr[i] << "\t\t" << priceArr[i] << "\n";
+			std::cout << idArr[i] << "\t" << std::left << std::setw(25) << nameArr[i] << "\t\t" << priceArr[i] << "руб\n";
 		}
 		system("pause");
 	}
@@ -159,7 +159,7 @@ void AddStorageItem()
 			id = std::stoi(chooseId) - 1;
 			count = std::stoi(chooseCount);
 
-			if (id > 0 || id > dynSize - 1 || count < 0 || count > 1488)
+			if (id+1 < 0 || id > dynSize - 1 || count < 0 || count > 1488)
 			{
 				std::cout << "Некорректный ID или количество\nМаксимальное количество 599\n";
 			}
@@ -219,7 +219,7 @@ void RemoveStorageItem()
 			id = std::stoi(chooseId) - 1;
 			count = std::stoi(chooseCount);
 
-			if (id > 0 || id > dynSize - 1 || count < 0 || count > countArr[id])
+			if (id+1 < 0 || id > dynSize - 1 || count < 0)
 			{
 				std::cout << "Некорректный ID или количество\n";
 				Sleep(1500);
@@ -282,7 +282,7 @@ void ChangeStoragePrice()
 			id = std::stoi(chooseId) - 1;
 			price = std::stoi(choosePrice);
 
-			if (id > 0 || id > dynSize - 1 || price < 0.0 || price > 99999999.0)
+			if (id+1 < 0 || id > dynSize - 1 || price < 0.0 || price > 99999999.0)
 			{
 				std::cout << "Некорректный ID или количество\nМаксимальная цена 99999999.0\n";
 			}
