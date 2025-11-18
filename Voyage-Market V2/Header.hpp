@@ -14,6 +14,9 @@ void ShowSuperAdminMenu();
 void AddStorageItem();
 void RemoveStorageItem();
 void ChangeStoragePrice();
+void ChangeStorage();
+void AddNewItem();
+void ChangeName();
 
 bool IsNumber(const std::string& str);
 void Start();
