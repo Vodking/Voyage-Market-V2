@@ -1,6 +1,7 @@
 #include "Header.hpp"
 
 size_t userSize = 2;
+size_t staffCount = 1;
 
 std::string userStatus[3]{ "Супер администратор", "Администратор", "Сотрудник" };
 std::string* loginArr = new std::string[userSize]{ "admin", "user" };
@@ -135,7 +136,7 @@ void ShowSuperAdminMenu()
 		}
 		else if (choose == "7")
 		{
-
+			ChangeUser();
 		}
 		else if (choose == "8")
 		{
@@ -669,7 +670,7 @@ void ChangeUser()
 		GetLine(choose);
 		if (choose == "1")
 		{
-
+			AddNewUser();
 		}
 		else if (choose == "2" && userSize > 0)
 		{
@@ -724,6 +725,7 @@ void AddNewUser()
 				std::cout << "Допустимые символы: a-z A-Z, 0-9\n\n";
 			}
 		}
+
 		while (exit)
 		{
 			system("cls");
@@ -774,17 +776,167 @@ void AddNewUser()
 			}
 		}
 
+		while (exit)
+		{
+			std::cout << "Пользователь -> " << newLogin << "\nПароль -> " << newPass << "\nРоль -> " << newRole;
+			std::cout << "\n1 - Подтвердить, 2 - Отмена. Ввод:";
+			GetLine(choose);
+			if (choose == "1")
+			{
+				dynSize++;
+				std::string* LoginArrTemp = new std::string[dynSize];
+				std::string* PassArrTemp = new std::string[dynSize];
+				std::string* RoleArrTemp = new std::string[dynSize];
+
+				FillArr(LoginArrTemp, loginArr, dynSize - 1);
+				FillArr(PassArrTemp, passArr, dynSize - 1);
+				FillArr(RoleArrTemp, statusArr, dynSize - 1);
+
+				LoginArrTemp[dynSize - 1] = newLogin;
+				PassArrTemp[dynSize - 1] = newPass;
+				RoleArrTemp[dynSize - 1] = newRole;
+
+				std::swap(loginArr, LoginArrTemp);
+				std::swap(statusArr, PassArrTemp);
+				std::swap(statusArr, RoleArrTemp);
+
+				delete[] LoginArrTemp, PassArrTemp, RoleArrTemp;
+
+				std::cout << "Идёт подготовка...\n";
+				Sleep(2000);
+				std::cout << "Пользователь успешно добавлен!\n";
+				Sleep(1500);
+				exit = false;
+				break;
+			}
+			else if (choose == "2")
+			{
+				std::cout << "Отменанана!\n";
+				Sleep(1500);
+			}
+			else
+			{
+				Err();
+			}
+	
+		}
+		if (exit == false)
+		{
+			break;
+		}
 	}
 }
 
-void ShowUsers()
+void ChangePass()
+{
+	std::string newPass, newPass2, choose;
+	int userId = 0, isAdmin = 0;
+
+	while (true)
+	{
+		if (currentStatus == userStatus[0])
+		{
+			ShowUsers(1);
+			isAdmin = 0;
+		}
+		else
+		{
+			ShowUsers();
+			isAdmin = 1;
+		}
+		std::cout << "\nВведите номер ползователя для смены пароля, \"exit\" для выхода\nВвод: ";
+		GetLine(choose);
+		if(choose == "exit")
+		{
+			std::cout << "Отмненен";
+			Sleep(1500);
+			break;
+		}
+		else if (IsNumber(choose))
+		{
+			userId = srd::stoi(choose);
+
+			if (userId < isAdmin || userId > dynSize - 1)
+			{
+				std::cout << "Пользователя с таким номером не сущестует!\n";
+				Sleep(1500);
+				continue;
+			}
+		}
+
+		while (true)
+		{
+			system("cls");
+
+			if (currentStatus == userStatus[0] && statusArr[userId] == userStatus[1])
+			{
+				std::cout << "Нельзя менять пароль администратору!\n";
+				Sleep(1500);
+				break;
+			}
+
+			std::cout << "Введите новый пароль для протзователя " << loginArr[userId]; << ": ";
+			GetLine(newPass);
+			std::cout << "Подтвердите пароль: ";
+			GetLine(newPass2);
+			if (newPass == newPass2)
+			{
+				passArr[userId] = newPass;
+				std::cout << "Успешно!\n";
+				Sleep(1500);
+				break;
+			}
+			else
+			{
+				std::cout << "Повторите попытку\n";
+				Sleep(3000);
+			}
+		}
+	}
+}
+
+void ShowUsers(int mode)
 {
 	system("cls");
-	std::cout << "ID\t" << std::left << std::setw(12) << "Логин\t\t" << "Пароль\t\t\t" << "Роль\n";
-	for (int i = 0; i < userSize; i++)
+	if (mode == 0)
 	{
-		std::cout << i << std::left << std::setw(12) << loginArr[i] << "\t\t" << passArr[i] << "\t\t\t" << statusArr[i];
+		std::cout << "ID\t" << std::left << std::setw(12) << "Логин\t\t" << "Пароль\t\t\t" << "Роль\n";
+		for (int i = 0; i < userSize; i++)
+		{
+			std::cout << i << std::left << std::setw(12) << loginArr[i] << "\t\t" << passArr[i] << "\t\t\t" << statusArr[i];
+		}
+		system("pause");
 	}
+	else if (mode == 1)
+	{
+		std::cout << "ID\t" << std::left << std::setw(12) << "Логин\t\t" << "Пароль\t\t\t" << "Роль\n";
+		for (int i = 0; i < userSize; i++)
+		{
+			std::cout << i << std::left << std::setw(12) << loginArr[i] << "\t\t" << passArr[i] << "\t\t\t" << statusArr[i];
+		}
+		
+	}
+
+}
+
+void DeleteUser()
+{
+	std::string chooseId, checkPass, choose;
+	int userId, isAdmin = 1;
+
+	if (currentStatus == userStatus[0] $$ dynSize < 2)
+	{
+		std::cout << "Нет доступных польхователей для удаления!\n";
+		Sleep(1500);
+		return;
+	}
+	else if (currentStatus == userStatus[1] && staffCount < 1)
+	{
+		std::cout << "Нет доступных польхователей для удаления!\n";
+		Sleep(1500);
+		return;
+	}
+
 }
 
 void SetLoginSymbols()
