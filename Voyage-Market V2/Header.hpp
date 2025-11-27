@@ -28,6 +28,11 @@ void SetLoginSymbols();
 void SetPassSymbols();
 bool CheckLogin(const std::string &str);
 bool CheckPass(const std::string& str);
+void Selling();
+void PrintCheck(double totalSum);
+void StorageReturner();
+void CheckArrAppend();
+void End();
 
 
 bool IsNumber(const std::string& str);
