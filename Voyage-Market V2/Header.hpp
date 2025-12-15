@@ -10,8 +10,11 @@
 #include <unordered_set>
 	
 void CreateStorage();
+void BuildStorage();
 void ShowStorage(int mode = 0);
 void ShowSuperAdminMenu();
+void ShowAdminMenu();
+void ShowUserMenu();
 void AddStorageItem();
 void RemoveStorageItem();
 void ChangeStoragePrice();
@@ -20,6 +23,7 @@ void AddNewItem();
 void ChangeName();
 void DeleteItem();
 void ChangeUser();
+bool Logout();
 void AddNewUser();
 void ChangePass();
 void ShowUsers(int mode = 0);
@@ -34,6 +38,7 @@ void StorageReturner();
 void CheckArrAppend();
 void End();
 void CheckSkidki(double &totalSum);
+void ShowIncome();
 
 
 bool IsNumber(const std::string& str);

@@ -78,6 +78,40 @@ void CreateStorage()
 
 }
 
+void BuildStorage()
+{
+	while (true)
+	{
+		std::string choose;
+		AddNewItem();
+		if (dynSize == 0)
+		{
+			system("cls");
+			std::cout << "Запись нового товара на склад\n1-Да, 2-Нет Ввод: ";
+			GetLine(choose);
+			if (choose == "1")
+			{
+				break;
+			}
+			else if (choose == "2")
+			{
+				continue;
+			}
+			else
+			{
+				Err();
+				Sleep(1500);
+				continue;
+			}
+		}
+		else
+		{
+			ShowStorage();
+			break;
+		}
+	}
+}
+
 void ShowStorage(int mode)
 {
 	if (mode == 0)
@@ -160,14 +194,121 @@ void ShowSuperAdminMenu()
 		}
 		else if (choose == "8")
 		{
-
+			ShowIncome();
 		}
 		else if (choose == "0")
 		{
-
+			if (Logout())
+			{
+				break;
+			}
 		}
 		else
 		{
+			if (dynSize < 1)
+			{
+				std::cout << "Склад пуст!\n";
+			}
+			std::cout << "БАРАН!!!!!!?????!?!?!?!?!?!??!?!?!?!?!!!!\n";
+			Err();
+		}
+		system("cls");
+	}
+}
+
+void ShowAdminMenu()
+{
+	std::string choose;
+	while (true)
+	{
+		std::cout << "1 - Начать продажу, 2 - Показать склад,\n3 - Пополнить склад, 4 - Списать товар,\n5 - Измененить цены 6 - Редактировать склад,\n 7 - Редактировать персонал, 8 - Отчёт о прибыли,\n0 - Закрыть смену\n";
+		std::cout << "Ввод: ";
+		GetLine(choose);
+		if (choose == "1")
+		{
+			Selling();
+		}
+		else if (choose == "2")
+		{
+			ShowStorage();
+		}
+		else if (choose == "3")
+		{
+			AddStorageItem();
+		}
+		else if (choose == "4")
+		{
+			RemoveStorageItem();
+		}
+		else if (choose == "5")
+		{
+			ChangeStoragePrice();
+		}
+		else if (choose == "6")
+		{
+			ChangeStorage();
+		}
+		else if (choose == "7")
+		{
+			ChangeUser();
+		}
+		else if (choose == "8")
+		{
+			ShowIncome();
+		}
+		else if (choose == "0")
+		{
+			if (Logout())
+			{
+				break;
+			}
+		}
+		else
+		{
+			if (dynSize < 1)
+			{
+				std::cout << "Склад пуст!\n";
+			}
+			std::cout << "БАРАН!!!!!!?????!?!?!?!?!?!??!?!?!?!?!!!!\n";
+			Err();
+		}
+		system("cls");
+	}
+}
+
+void ShowUserMenu()
+{
+	std::string choose;
+	while (true)
+	{
+		std::cout << "1 - Начать продажу, 2 - Показать склад,\n3 - Отчёт о прибыли,\n0 - Закрыть смену\n";
+		std::cout << "Ввод: ";
+		GetLine(choose);
+		if (choose == "1")
+		{
+			Selling();
+		}
+		else if (choose == "2")
+		{
+			ShowStorage();
+		}
+		else if (choose == "3")
+		{
+			ShowIncome();
+		}
+		else if (choose == "0")
+		{
+			if (Logout())
+			{
+				break;
+			}
+		}
+		else
+		{
+			if (dynSize < 1)
+			{
+				std::cout << "Склад пуст!\n";
+			}
 			std::cout << "БАРАН!!!!!!?????!?!?!?!?!?!??!?!?!?!?!!!!\n";
 			Err();
 		}
@@ -704,23 +845,54 @@ void ChangeUser()
 		}
 		else if (choose == "3" && dynSize > 0)
 		{
-
+			ChangePass();
 		}
-		else if (choose == "4")
+		else if (choose == "4" && dynSize > 0)
 		{
-
+			DeleteUser();
 		}
 		else if (choose == "5")
 		{
-
+			system("cls");
+			break;
 		}
 		else
 		{
+			if (userSize < 2)
+			{
+				std::cout << "Пользователи отсутствуют!\n";
+			}
 			std::cout << "БАРАН\n";
 			Err();
 		}
 	}
 
+}
+
+
+bool Logout()
+{
+	std::string choose;
+	system("cls");
+	while (true)
+	{
+		std::cout << "Для подтверждение выхода из пользователя введите свой пароль или \"exit\" для возврата в меню: ";
+		GetLine(choose);
+		if (choose == "exit")
+		{
+			system("cls");
+			return false;
+		}
+		else if (choose == passArr[currentId - 1] || choose == passArr[0])
+		{
+			system("cls");
+			return true;
+		}
+		else
+		{
+			Err();
+		}
+	}
 }
 
 
@@ -1264,7 +1436,37 @@ void Selling()
 				GetLine(choose);
 				if (choose == "1")
 				{
-
+					std::cout << "К оплате: " << totalSum << "\n\n";
+					std::cout << "Введите кол-во наличных: ";
+					GetLine(chooseMoney);
+					if (IsNumber(chooseMoney))
+					{
+						money = std::stod(chooseMoney);
+						if (money < totalSum)
+						{
+							std::cout << "Недостаточно средств!\n";
+							Sleep(1500);
+							continue;
+						}
+						else if (money - totalSum > cash)
+						{
+							std::cout << "У нас нет сдачи.\n";
+							Sleep(1500);
+							continue;
+						}
+						else
+						{
+							std::cout << "Ваши: " << money << "\n\n";
+							Sleep(400);
+							std::cout << "Оплата прошла успешно. Сдача: " << money - totalSum << " рублей\n";
+							Sleep(2000);
+							cash += totalSum;
+							cashIncome += totalSum;
+							bonusArr[currentId] += totalSum;
+							system("cls");
+							break;
+						}
+					}
 				}
 				else if (choose == "2")
 				{
@@ -1303,11 +1505,19 @@ void Selling()
 							Sleep(800);
 						}
 						std::cout << "Оплата прошла успешно. Спасибо за покупку\n";
+						Sleep(2000);
+						bankIncome += totalSum;
+						bonusArr[currentId] += totalSum;
+						system("cls");
+						break;
 					}
 				}
 				else if (choose == "Муравей")
 				{
-
+					std::cout << "Мы рады! Оплата прошла!";
+					Sleep(1500);
+					system("cls");
+					break;
 				}
 				else
 				{
@@ -1443,6 +1653,19 @@ void CheckSkidki(double &totalSum)
 
 }
 
+void ShowIncome()
+{
+	system("cls");
+	std::cout << "Текущая прибль  за смену\n\n";
+	std::cout << "Наличный расчет: " << cashIncome << std::endl;
+	std::cout << "Безналичный расчет: " << bankIncome << std::endl;
+	std::cout << "Итого: " << bankIncome + cashIncome << std::endl << std::endl;
+	std::cout << "Сумма ваших продаж: " << bonusArr[currentId] << std::endl << std::endl;
+
+	system("pause");
+	system("cls");
+}
+
 
 
 
@@ -1469,54 +1692,105 @@ bool IsNumber(const std::string& str)
 
 void Start()
 {
-	std::cout << "\n\n\n\n\nVoyage Market\n\n\n\n";
+
 	std::string choose;
-	if (Login())
+	while (true)
 	{
-		if (currentStatus == userStatus[0])
+		std::cout << "\n\n\n\n\nVoyage Market\n\n\n\n";
+		if (Login())
 		{
-			while (true)
+			if (currentStatus == userStatus[0])
+			{
+				while (true)
+				{
+					system("cls");
+					std::cout << "Выберите склад\n1 - Готовый складб 2 - Создать новый склад\nВвод: ";
+					GetLine(choose);
+					if (choose == "1")
+					{
+						if (isStorageCreated == false)
+						{
+							CreateStorage();
+						}
+
+						ShowSuperAdminMenu();
+						break;
+					}
+					else if (choose == "2")
+					{
+						if (isStorageCreated == false)
+						{
+							BuildStorage();
+						}
+					}
+				}
+				CreateStorage();
+
+			}
+			else if (currentStatus == userStatus[1])
+			{
+				while (true)
+				{
+					system("cls");
+					std::cout << "Выберите склад\n1 - Готовый складб 2 - Создать новый склад\nВвод: ";
+					GetLine(choose);
+					if (choose == "1")
+					{
+						if (isStorageCreated == false)
+						{
+							CreateStorage();
+						}
+
+						ShowAdminMenu();
+						break;
+					}
+					else if (choose == "2")
+					{
+						if (isStorageCreated == false)
+						{
+							BuildStorage();
+						}
+
+					}
+				}
+				CreateStorage();
+
+			}
+			else if (currentStatus == userStatus[2])
+			{
+				if (!isStorageCreated)
+				{
+					CreateStorage();
+				}
+
+				ShowUserMenu();
+			}
+		}
+		else
+		{
+			system("cls");
+			std::cout << "Введите пароль супер администратора длдя завершения смены или \"exit\" для отмены: ";
+			GetLine(choose);
+			if (choose == passArr[0])
 			{
 				system("cls");
-				std::cout << "Выберите склад\n1 - Готовый складб 2 - Создать новый склад\nВвод: ";
-				GetLine(choose);
-				if (choose == "1")
-				{
-					if (isStorageCreated == false)
-					{
-						CreateStorage();
-					}
-
-					ShowSuperAdminMenu();
-				}
-				else if (choose == "2")
-				{
-					if (isStorageCreated == false)
-					{
-
-					}
-					// создать новый склад
-				}
+				std::cout << "Итоговая прыбиль за смену: " << cashIncome + bankIncome;
+				std::cout << "\n\n\n\t\tЗавершения работы программы\n\n";
+				Sleep(2000);
+				break;
 			}
-			CreateStorage();
-			// Открытие + создание склада
-		}
-		else if (currentStatus == userStatus[1])
-		{
-			CreateStorage();
-			// Открытие + создание склада
-		}
-		else if (currentStatus == userStatus[2])
-		{
-			CreateStorage();
-			// Открытие + создание склада
+			else if (choose == "exit")
+			{
+				continue;
+			}
+			else
+			{
+				Err();
+			}
+			std::cout << "Завершения работы программы" << std::endl << std::endl;
 		}
 	}
-	else
-	{
-		system("cls");
-		std::cout << "Завершения работы программы" << std::endl << std::endl;
-	}
+	
 }
 
 bool Login()
