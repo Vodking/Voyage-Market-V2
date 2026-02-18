@@ -1041,6 +1041,11 @@ void AddNewUser()
 	}
 }
 
+int AddNewUserWrap(std::string login, std::string pass, std::string newRole)
+{
+	return 0;
+}
+
 void ChangePass()
 {
 	std::string newPass, newPass2, choose;
@@ -1274,6 +1279,7 @@ void SetPassSymbols()
 
 	isPassSetCreated = true;
 }
+
 
 bool CheckLogin(const std::string& str)
 {
@@ -1803,25 +1809,53 @@ bool Login()
 		GetLine(login);
 		std::cout << "Введите пароль: ";
 		GetLine(pass);
-		if (login == "exit" && pass == "exit")
+		if (LoginWrap(login, pass) == -1)
 		{
 			currentStatus = "";
 			return false;
 		}
+		if (LoginWrap(login, pass) == 0)
+		{
+			std::cout << "Пользователь: " << login << "\n\nДобро пожаловать!\n\n";
+			return true;
+		}
+		else if (LoginWrap(login, pass) == 1)
+		{
+			std::cout << "Неверный логин или пароль!\n";
+		}
+
+		
+
+	}
+}
+
+int LoginWrap(const std::string login, const std::string pass)
+{
+	if (login == "exit" && pass == "exit")
+	{
+		return -1;
+	}
+	else
+	{
 		for (size_t i = 0; i < userSize; i++)
 		{
 			if (login == loginArr[i] && pass == passArr[i])
 			{
-				std::cout << "Пользователь: " << loginArr[i] << "\n\nДобро пожаловать!\n\n";
-				std::cout << "Ваш статус: " << statusArr[i] << "\n\n";
+
 				currentStatus = statusArr[i];
 				currentId = 0;
-				return true;
+				return 0;
+			}
+			else
+			{
+				return 1;
 			}
 		}
-
 	}
+
 }
+
+
 
 inline void GetLine(std::string& str)
 {
@@ -1842,4 +1876,19 @@ void FillArr(ArrType* dynArr, ArrType* staticArr, size_t arrSize)
 	{
 		dynArr[i] = staticArr[i];
 	}
+}
+
+std::string generate_random_string(std::size_t length) {
+	const std::string characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+	std::random_device rd;
+	std::mt19937 generator(rd());
+	std::uniform_int_distribution<> distribution(0, characters.size() - 1);
+
+	std::string random_string;
+	for (std::size_t i = 0; i < length; ++i) {
+		random_string += characters[distribution(generator)];
+	}
+
+	return random_string;
 }

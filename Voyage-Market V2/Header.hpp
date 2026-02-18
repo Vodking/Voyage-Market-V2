@@ -8,6 +8,8 @@
 #include <limits>
 #include <iomanip>
 #include <unordered_set>
+#include <random>
+#include <algorithm>
 
 extern size_t userSize;
 extern size_t staffCount;
@@ -62,6 +64,9 @@ void ChangeUser();
 bool Logout();
 
 void AddNewUser();
+
+int AddNewUserWrap(std::string login, std::string pass, std::string newRole);
+
 void ChangePass();
 void ShowUsers(int mode = 0);
 void DeleteUser();
@@ -83,10 +88,13 @@ void ShowIncome();
 bool IsNumber(const std::string& str);
 void Start();
 bool Login();
+int LoginWrap(const std::string login, const std::string pass);
 inline void GetLine(std::string& str);
 inline void Err(int time = 1500);
 
 template<typename ArrType>
 void FillArr(ArrType* dynArr, ArrType* staticArr, size_t arrSize);
+
+std::string generate_random_string(std::size_t length);
 
 #endif // !HEADER_HPP
